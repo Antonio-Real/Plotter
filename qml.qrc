@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>images/line-chart.png</file>
+        <file>images/config.png</file>
+        <file>images/link.png</file>
+        <file>images/unlink.png</file>
+    </qresource>
+</RCC>
