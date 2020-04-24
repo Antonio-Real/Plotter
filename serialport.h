@@ -12,6 +12,7 @@ class SerialPort : public QSerialPort
     Q_PROPERTY(QStringList availablePorts READ availablePorts NOTIFY availablePortsChanged)
     Q_PROPERTY(QStringList portsInfo READ portsInfo NOTIFY portsInfoChanged)
     Q_PROPERTY(QStringList plotLabels READ plotLabels NOTIFY plotLabelsChanged)
+    Q_PROPERTY(QString data READ data WRITE setData NOTIFY dataChanged)
     Q_PROPERTY(QVector<int> lastPoint READ lastPoint NOTIFY lastPointChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY isConnectedChanged)
 
@@ -20,19 +21,22 @@ public:
 
     QString currentPort();
     void setCurrentPort(QString name);
+    void setData(const QString data);
     QStringList availablePorts();
     QStringList portsInfo();
     QStringList plotLabels();
+    QString data();
     QVector<int> lastPoint();
     bool isConnected();
 
 signals:
-    void currentPortChanged(QString &);
-    void availablePortsChanged(QStringList &);
-    void portsInfoChanged(QStringList &);
-    void plotLabelsChanged(QStringList &);
-    void lastPointChanged(QVector<int> &);
-    void isConnectedChanged(bool &);
+    void currentPortChanged();
+    void availablePortsChanged();
+    void portsInfoChanged();
+    void plotLabelsChanged();
+    void dataChanged();
+    void lastPointChanged();
+    void isConnectedChanged();
 
 public slots:
     void refreshPortInfo();
@@ -46,6 +50,7 @@ private:
     QStringList mPorts;
     QStringList mPortsInfo;
     QStringList mPlotLabels;
+    QString mData;
     QVector<int> mValues;
     bool mIsConnected;
 

@@ -19,7 +19,16 @@ void SerialPort::setCurrentPort(QString name)
 {
     mPortName = name;
     setPortName(name);
-    emit currentPortChanged(name);
+    emit currentPortChanged();
+}
+
+void SerialPort::setData(const QString data)
+{
+    mData = data;
+    if(isOpen()) {
+        qDebug() << "Data sent: " << data.toUtf8();
+        write(data.toUtf8());
+    }
 }
 
 QStringList SerialPort::availablePorts()
@@ -35,6 +44,11 @@ QStringList SerialPort::portsInfo()
 QStringList SerialPort::plotLabels()
 {
     return mPlotLabels;
+}
+
+QString SerialPort::data()
+{
+    return mData;
 }
 
 QVector<int> SerialPort::lastPoint()
@@ -74,8 +88,8 @@ void SerialPort::refreshPortInfo()
         mPorts.append(info.portName());
         mPortsInfo.append(list);
     }
-    emit availablePortsChanged(mPorts);
-    emit portsInfoChanged(mPortsInfo);
+    emit availablePortsChanged();
+    emit portsInfoChanged();
 }
 
 void SerialPort::connectSerial()
@@ -83,7 +97,7 @@ void SerialPort::connectSerial()
     qDebug() << currentPort() <<baudRate() << dataBits() << stopBits() << flowControl() << parity();
     if(!isOpen()) {
         mIsConnected = open(QIODevice::ReadWrite);
-        isConnectedChanged(mIsConnected);
+        isConnectedChanged();
     }
     else {
         qDebug() << "Serial still open!";
@@ -95,17 +109,18 @@ void SerialPort::disconnectSerial()
     if(isOpen()) {
         close();
         mIsConnected = false;
-        emit isConnectedChanged(mIsConnected);
+        emit isConnectedChanged();
     }
 }
 
 void SerialPort::readyReadSlot()
 {
     while(canReadLine()) {
-        auto data = readLine();
-        qDebug() <<  data;
+        mData = QString(readLine());
+        emit dataChanged();
+        qDebug() <<  mData;
         // Caso haja varios dados, separar cada um deles com ';'
-        auto varList = QString(data).split(';',QString::SkipEmptyParts);
+        auto varList = QString(mData).split(';',QString::SkipEmptyParts);
         // Para cada um dos dados, separar Label e respetivo valor "Label=Value"
         for(auto &var : varList) {
             auto varSplit = var.remove(QRegExp("[\n\r ]")).split('=', QString::SkipEmptyParts);
@@ -115,7 +130,7 @@ void SerialPort::readyReadSlot()
                 QString label = varSplit.at(0);
                 if(!mPlotLabels.contains(label)) {
                     mPlotLabels.append(label);
-                    emit plotLabelsChanged(mPlotLabels);
+                    emit plotLabelsChanged();
                 }
                 bool okPtr = false;
                 double x = varSplit.at(1).toDouble(&okPtr);
@@ -125,7 +140,7 @@ void SerialPort::readyReadSlot()
         }
         // No fim de processar uma linha, enviar valores para QML
         if(!mValues.isEmpty()) {
-            emit lastPointChanged(mValues);
+            emit lastPointChanged();
             qDebug() << mValues;
             mValues.clear();
         }
