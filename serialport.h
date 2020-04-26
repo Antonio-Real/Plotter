@@ -13,7 +13,7 @@ class SerialPort : public QSerialPort
     Q_PROPERTY(QStringList portsInfo READ portsInfo NOTIFY portsInfoChanged)
     Q_PROPERTY(QStringList plotLabels READ plotLabels NOTIFY plotLabelsChanged)
     Q_PROPERTY(QString data READ data WRITE setData NOTIFY dataChanged)
-    Q_PROPERTY(QVector<int> lastPoint READ lastPoint NOTIFY lastPointChanged)
+    Q_PROPERTY(QVector<float> lastPoint READ lastPoint NOTIFY lastPointChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY isConnectedChanged)
 
 public:
@@ -26,7 +26,7 @@ public:
     QStringList portsInfo();
     QStringList plotLabels();
     QString data();
-    QVector<int> lastPoint();
+    QVector<float> lastPoint();
     bool isConnected();
 
 signals:
@@ -51,7 +51,7 @@ private:
     QStringList mPortsInfo;
     QStringList mPlotLabels;
     QString mData;
-    QVector<int> mValues;
+    QVector<float> mValues;
     bool mIsConnected;
 
 };
