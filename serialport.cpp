@@ -51,7 +51,7 @@ QString SerialPort::data()
     return mData;
 }
 
-QVector<float> SerialPort::lastPoint()
+QVector<qreal> SerialPort::lastPoint()
 {
     return mValues;
 }
@@ -133,7 +133,7 @@ void SerialPort::readyReadSlot()
                     emit plotLabelsChanged();
                 }
                 bool okPtr = false;
-                float x = varSplit.at(1).toFloat(&okPtr);
+                qreal x = varSplit.at(1).toDouble(&okPtr);
                 if (okPtr)
                     mValues.append(x);
             }
@@ -141,7 +141,6 @@ void SerialPort::readyReadSlot()
         // No fim de processar uma linha, enviar valores para QML
         if(!mValues.isEmpty()) {
             emit lastPointChanged();
-            qDebug() << mValues;
             mValues.clear();
         }
     }

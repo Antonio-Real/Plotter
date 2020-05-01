@@ -11,6 +11,7 @@ ApplicationWindow {
     title: qsTr("Serial Plotter")
 
     property alias serial: serialManager
+    property alias currentPageIndex: stackId.currentIndex
 
     Dialog {
         id: diag
@@ -108,7 +109,6 @@ ApplicationWindow {
 
         onErrorOccurred: console.log("Error: " + serialManager.error)
         onReadyRead: readyReadSlot()
-        onDataChanged: console.log("DATA MAIN: " + data)
     }
 
     menuBar: MenuBar {
@@ -149,13 +149,8 @@ ApplicationWindow {
     StackLayout {
         id: stackId
         anchors.fill: parent
-        ChartPage {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
 
-        ConsolePage {
-
-        }
+        ChartPage { } // Index 0
+        ConsolePage { } // Index 1
     }
 }

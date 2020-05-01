@@ -7,8 +7,8 @@ Page {
     Connections {
         target: serialManager
         onDataChanged: {
-            txtEdit.append("IN   >>> " + serialManager.data)
-            console.log("QML DATA: " + serialManager.data)
+            if(currentPageIndex == 1)
+                txtEdit.append("IN   >>> " + serialManager.data)
         }
     }
 

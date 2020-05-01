@@ -36,7 +36,6 @@ Page {
 
         onPlotLabelsChanged: {
             viewPort.createSeries(ChartView.SeriesTypeLine, serialManager.plotLabels[serialManager.plotLabels.length - 1],axisX,axisY)
-            console.log("LABELS ADDED")
         }
         onLastPointChanged: {
             var time = timer * sampleTime.realValue
