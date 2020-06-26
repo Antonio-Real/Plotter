@@ -7,5 +7,6 @@
         <file>images/unlink.png</file>
         <file>qml/ChartPage.qml</file>
         <file>qml/ConsolePage.qml</file>
+        <file>qml/LoggingPage.qml</file>
     </qresource>
 </RCC>

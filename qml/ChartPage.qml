@@ -5,6 +5,8 @@ import QtCharts 2.3
 
 Page {
 
+    signal saveValue()
+
     ChartView {
         id: viewPort
         anchors.fill: parent
@@ -31,6 +33,7 @@ Page {
     }
 
     Connections {
+        id: connection
         target: serialManager
         property int timer: 0
 
@@ -63,16 +66,22 @@ Page {
         Button {
             Layout.margins: 5
             text: "Clear Plot"
+            font.bold: true
             onClicked: {
-                viewPort.removeAllSeries()
                 axisX.min = 0
                 axisX.max = 10
                 axisY.min = 0
                 axisY.max = 10
 
-                serialManager.timer = 0
+                connection.timer = 0
                 serialManager.clearPlotLabels()
+                viewPort.removeAllSeries()
             }
+        }
+        Button {
+            Layout.margins: 5
+            text: "Save value"
+            onClicked: saveValue()
             font.bold: true
         }
 

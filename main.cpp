@@ -1,17 +1,21 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickstyle>
-#include <serialport.h>
 #include <QIcon>
+#include "serialport.h"
+#include "fileio.h"
 
 int main(int argc, char *argv[])
 {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc, argv);
     app.setWindowIcon(QIcon("images/line-chart.png"));
+    app.setOrganizationName("SomeOrg");
+    app.setOrganizationDomain("SomeOrg.com");
 
     QQuickStyle::setStyle("Fusion");
     qmlRegisterType<SerialPort>("components.serial", 1,0,"SerialPort");
+    qmlRegisterType<FileIO>("components.fileio",1,0,"FileIO");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));

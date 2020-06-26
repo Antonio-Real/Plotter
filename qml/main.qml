@@ -143,6 +143,10 @@ ApplicationWindow {
                 text: "Console"
                 onTriggered: stackId.currentIndex = 1
             }
+            MenuItem {
+                text: "Logs"
+                onTriggered: stackId.currentIndex = 2
+            }
         }
     }
 
@@ -150,7 +154,14 @@ ApplicationWindow {
         id: stackId
         anchors.fill: parent
 
-        ChartPage { } // Index 0
-        ConsolePage { } // Index 1
+        ChartPage {
+            id: chartPage
+            onSaveValue: {
+                loggingPage.str = serial.data
+            }
+        } // Index 0
+        ConsolePage { id: consolePage } // Index 1
+        LoggingPage { id: loggingPage } // Index 2
+
     }
 }
