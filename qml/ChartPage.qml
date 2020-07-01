@@ -35,13 +35,14 @@ Page {
     Connections {
         id: connection
         target: serialManager
-        property int timer: 0
+        property date initialDate
 
         onPlotLabelsChanged: {
             viewPort.createSeries(ChartView.SeriesTypeLine, serialManager.plotLabels[serialManager.plotLabels.length - 1],axisX,axisY)
+            initialDate = new Date()
         }
         onLastPointChanged: {
-            var time = timer * sampleTime.realValue
+            var time = (new Date().getTime() - initialDate.getTime()) / 1000
             for (var i = 0; i < serialManager.lastPoint.length; i++) {
                 viewPort.series(i).append(time, serialManager.lastPoint[i])
 
@@ -57,7 +58,6 @@ Page {
                 axisX.min = time - 10
             }
             axisX.max = time + 1
-            timer++
         }
     }
 
@@ -73,7 +73,6 @@ Page {
                 axisY.min = 0
                 axisY.max = 10
 
-                connection.timer = 0
                 serialManager.clearPlotLabels()
                 viewPort.removeAllSeries()
             }
@@ -84,42 +83,11 @@ Page {
             onClicked: saveValue()
             font.bold: true
         }
-
-        Label {
-            text: "Frequency"
-        }
-        SpinBox {
-            id: sampleTime
-            from: 0
-            value: 100
-            to: 100 * 100
-            stepSize: 100
-            wheelEnabled: true
-            editable: true
-
-            property int decimals: 2
-            property real realValue: value / 100
-
-            validator: DoubleValidator {
-                bottom: Math.min(sampleTime.from, sampleTime.to)
-                top:  Math.max(sampleTime.from, sampleTime.to)
-            }
-            textFromValue: function(value, locale) {
-                return Number(value / 100).toLocaleString(locale, 'f', sampleTime.decimals)
-            }
-
-            valueFromText: function(text, locale) {
-                return Number.fromLocaleString(locale, text) * 100
-            }
-            onValueModified: console.log(realValue)
-        }
-
         CheckBox {
             id: scrollPlot
-            text: "Scroll EN:"
+            text: "Scrolling enabled"
             checked: true
         }
-
         Label {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignLeft

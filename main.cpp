@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc, argv);
-    app.setWindowIcon(QIcon("images/line-chart.png"));
+    app.setWindowIcon(QIcon(":/images/line-chart.png"));
     app.setOrganizationName("SomeOrg");
     app.setOrganizationDomain("SomeOrg.com");
 
