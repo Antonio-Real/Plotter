@@ -8,7 +8,19 @@ Page {
 
     property string str
 
-    onStrChanged: txtEdit.append(str + "\n");
+    onStrChanged: {
+        if(txtEdit.text === "") {
+            var labels = ""
+            for(var i = 0; i < serialManager.plotLabels.length; i++) {
+                labels += serialManager.plotLabels[i]
+                if( i < serialManager.plotLabels.length - 1)
+                    labels += ','
+            }
+            txtEdit.append(labels)
+        }
+
+        txtEdit.append(str);
+    }
 
     ColumnLayout {
         anchors.fill: parent

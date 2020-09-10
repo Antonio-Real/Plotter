@@ -157,7 +157,13 @@ ApplicationWindow {
         ChartPage {
             id: chartPage
             onSaveValue: {
-                loggingPage.str = serial.data
+                var txt = ""
+                for(var i = 0; i < serialManager.lastPoint.length; i++) {
+                    txt += serialManager.lastPoint[i]
+                    if(i < serialManager.lastPoint.length - 1)
+                         txt += ','
+                }
+                loggingPage.str = txt
             }
         } // Index 0
         ConsolePage { id: consolePage } // Index 1

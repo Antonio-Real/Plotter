@@ -25,7 +25,7 @@ Page {
                 onAccepted: {
                     if(text) {
                         txtEdit.append("OUT <<< " + text)
-                        serialManager.data = text + '\r'
+                        serialManager.data = text
                         clear()
                     }
                 }

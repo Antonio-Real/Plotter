@@ -116,9 +116,11 @@ void SerialPort::disconnectSerial()
 void SerialPort::readyReadSlot()
 {
     while(canReadLine()) {
+
+        mValues.clear();
         mData = QString(readLine());
         emit dataChanged();
-        qDebug() <<  mData;
+        qDebug() << "DATA RECEIVED" <<  mData;
         // Caso haja varios dados, separar cada um deles com ';'
         auto varList = QString(mData).split(';',QString::SkipEmptyParts);
         // Para cada um dos dados, separar Label e respetivo valor "Label=Value"
@@ -141,7 +143,6 @@ void SerialPort::readyReadSlot()
         // No fim de processar uma linha, enviar valores para QML
         if(!mValues.isEmpty()) {
             emit lastPointChanged();
-            mValues.clear();
         }
     }
 }

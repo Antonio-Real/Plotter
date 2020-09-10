@@ -25,7 +25,7 @@ Page {
         ValueAxis {
             id: axisY
             min: 0
-            max: 10
+            max: 1
             labelFormat: "%d"
             labelsFont: Qt.font({pointSize: 10})
             titleText: "Units (?)"
@@ -38,7 +38,7 @@ Page {
         property date initialDate
 
         onPlotLabelsChanged: {
-            viewPort.createSeries(ChartView.SeriesTypeLine, serialManager.plotLabels[serialManager.plotLabels.length - 1],axisX,axisY)
+            viewPort.createSeries(ChartView.SeriesTypeSpline, serialManager.plotLabels[serialManager.plotLabels.length - 1],axisX,axisY)
             initialDate = new Date()
         }
         onLastPointChanged: {
@@ -71,7 +71,7 @@ Page {
                 axisX.min = 0
                 axisX.max = 10
                 axisY.min = 0
-                axisY.max = 10
+                axisY.max = 1
 
                 serialManager.clearPlotLabels()
                 viewPort.removeAllSeries()
@@ -95,6 +95,22 @@ Page {
             text: serialManager.isConnected ? "Connected to port: " + serialManager.currentPort
                                             : "Disconnected"
             font.pointSize: 10
+        }
+
+        RowLayout {
+            Layout.margins: 5
+            Label { text: "Send: "  }
+            TextField {
+                id: txtField
+                Layout.fillWidth: true
+                enabled: serialManager.isConnected
+                onAccepted: {
+                    if(text) {
+                        serialManager.data = text
+                        clear()
+                    }
+                }
+            }
         }
     }
 }
